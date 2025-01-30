@@ -5,5 +5,10 @@
  * @returns {string[]}
  */
 export function sortStrings(arr, param = 'asc') {
-
+    let newArr = arr.slice();
+    newArr.sort((a,b) => a.localeCompare(b, ["ru-RU","en-US"], { caseFirst: "upper" }));
+    if (param != "asc") {
+        newArr.reverse()
+    }
+    return newArr
 }

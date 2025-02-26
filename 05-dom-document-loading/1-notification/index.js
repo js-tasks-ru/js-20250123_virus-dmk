@@ -1,4 +1,5 @@
 export default class NotificationMessage {
+  static lastShownMessage = null;
   element;
 
   constructor(
@@ -11,6 +12,7 @@ export default class NotificationMessage {
     this.message = message;
     this.duration = duration;
     this.type = type;
+    this.timerID = undefined;
     this.element = this.createElement(this.createTemplate());
   }
 
@@ -18,8 +20,7 @@ export default class NotificationMessage {
 
     const elem = document.createElement('div');
     elem.innerHTML = template;
-    elem.firstElementChild.outerHTML = template;
-    return elem
+    return elem.firstElementChild;
   }
 
 createTemplate() {
@@ -43,20 +44,26 @@ createTypeMessageTemplate() {
   
 }
 
-show() {
-  document.body.append(this.element);
-  setTimeout(this.remove,this.duration);
+show(target = document.body) {
+  if (NotificationMessage.lastShownMessage) this.remove();
+
+  NotificationMessage.lastShownMessage = this;
+  
+  target.append(this.element);
+  this.timerID = setTimeout(() => this.remove(), this.duration);
 }
 
 remove() {
 
-  this.element.remove()
+  this.element.remove();
+  NotificationMessage.lastShownMessage = null;
 
 }
 
 destroy() {
 
-  this.remove()
+  clearTimeout(this.timerID);
+  this.remove();
 
 }
 

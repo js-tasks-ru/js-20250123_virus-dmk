@@ -38,7 +38,6 @@ createTemplate() {
 }
 
 createTypeMessageTemplate() {
-  debugger;
   if (this.type === 'success' ) return 'notification success' ;
   if (this.type === 'error' ) return 'notification error' ;
   return 'notification '
